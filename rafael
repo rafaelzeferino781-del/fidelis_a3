@@ -1,0 +1,53 @@
+
+CREATE DATABASE IF NOT EXISTS seu_banco_de_dados_a3;
+
+
+CREATE USER 'user_4423ncnez_4428zpru7'@'%' IDENTIFIED BY 'sua_senha_do_usuario';
+
+
+GRANT ALL PRIVILEGES ON seu_banco_de_dados_a3.* TO 'user_4423ncnez_4428zpru7'@'%';
+
+
+FLUSH PRIVILEGES;
+
+USE seu_banco_de_dados_a3;
+
+
+CREATE TABLE users (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    nome VARCHAR(255) NOT NULL,
+    cpf VARCHAR(14) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE company (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    cnpj VARCHAR(18) NOT NULL UNIQUE,
+    nome VARCHAR(255) NOT NULL,
+    nota DECIMAL(3, 2),
+    reclamacoes INT NOT NULL,
+    status VARCHAR(50),
+    PRIMARY KEY (id)
+);
+
+
+CREATE TABLE simulationlog (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    user_id BIGINT NOT NULL,
+    company_id BIGINT NOT NULL,
+    site_url VARCHAR(255),
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    
+    PRIMARY KEY (id),
+
+    CONSTRAINT fk_simulationlog_user
+        FOREIGN KEY (user_id)
+        REFERENCES users(id),
+
+    CONSTRAINT fk_simulationlog_company
+        FOREIGN KEY (company_id)
+        REFERENCES company(id)
+);
+
